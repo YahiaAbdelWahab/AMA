@@ -18,15 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SearchActivity"
             android:launchMode="singleInstance" />
-
-        <activity android:name=".ProfileActivity"
+        <activity
+            android:name=".ProfileActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".SettingsActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".SignInActivity"
             android:launchMode="singleInstance" />
 
-        <activity android:name=".SettingsActivity"
+        <activity android:name=".RegisterActivity"
             android:launchMode="singleInstance" />
     </application>
 

@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        startActivity(Intent(this, RegisterActivity::class.java))
+
         home_bottom_nav.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_search -> {
