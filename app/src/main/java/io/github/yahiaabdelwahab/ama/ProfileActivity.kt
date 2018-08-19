@@ -17,6 +17,15 @@ class ProfileActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.action_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.action_search -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                    overridePendingTransition(0, 0)
+                }
+                R.id.action_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    overridePendingTransition(0, 0)
                 }
             }
             return@setOnNavigationItemSelectedListener true
