@@ -11,28 +11,53 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:label="@string/home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SearchActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:label="@string/search" />
+
         <activity
             android:name=".ProfileActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:label="@string/profile" />
+
         <activity
             android:name=".SettingsActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:label="@string/settings" />
+
         <activity
             android:name=".SignInActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:label="@string/sign_in"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
+        </activity>
 
         <activity android:name=".RegisterActivity"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleInstance"
+            android:label="@string/register"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+
+        </activity>
+
     </application>
 
 </manifest>

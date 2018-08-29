@@ -16,7 +16,7 @@
 
     <item>
 
-        <ripple android:color="?attr/colorControlHighlight">
+        <ripple android:color="?android:attr/colorControlHighlight">
             <item android:id="@android:id/mask"
                 android:drawable="@android:color/white" />
         </ripple>

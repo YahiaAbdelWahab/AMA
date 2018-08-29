@@ -14,9 +14,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this, RegisterActivity::class.java))
-
         setupBottomNavigation(home_bottom_nav)
+
+        main_sign_in_button.setOnClickListener {
+            startActivity(Intent(this, SignInActivity::class.java))
+        }
+
+        main_register_button.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
     }
 
 
