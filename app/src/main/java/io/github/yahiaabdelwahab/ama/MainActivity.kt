@@ -3,6 +3,7 @@ package io.github.yahiaabdelwahab.ama
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +16,12 @@ class MainActivity : AppCompatActivity() {
 
         startActivity(Intent(this, RegisterActivity::class.java))
 
-        home_bottom_nav.setOnNavigationItemSelectedListener {
+        setupBottomNavigation(home_bottom_nav)
+    }
+
+
+    private fun setupBottomNavigation(bottomNavigation: BottomNavigationView) {
+        bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_search -> {
                     startActivity(Intent(this, SearchActivity::class.java))

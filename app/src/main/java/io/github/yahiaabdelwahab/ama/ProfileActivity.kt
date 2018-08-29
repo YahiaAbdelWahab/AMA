@@ -3,6 +3,7 @@ package io.github.yahiaabdelwahab.ama
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
@@ -13,7 +14,12 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        profile_bottom_nav.setOnNavigationItemSelectedListener {
+        setupBottomNavigation(profile_bottom_nav)
+    }
+
+
+    private fun setupBottomNavigation(bottomNavigation: BottomNavigationView) {
+        bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {
                     startActivity(Intent(this, MainActivity::class.java))
