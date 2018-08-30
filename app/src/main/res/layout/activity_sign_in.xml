@@ -12,7 +12,7 @@
 
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/sign_in_email_text_view"
+            android:id="@+id/sign_in_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -23,6 +23,7 @@
             app:layout_constraintBottom_toTopOf="@id/guideline">
 
             <EditText
+                android:id="@+id/sign_in_email_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -32,17 +33,18 @@
 
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/sign_in_password_text_view"
+            android:id="@+id/sign_in_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/sign_in_email_text_view"
-            app:layout_constraintStart_toStartOf="@+id/sign_in_email_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_email_text_view">
+            app:layout_constraintEnd_toEndOf="@+id/sign_in_email"
+            app:layout_constraintStart_toStartOf="@+id/sign_in_email"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_email">
 
             <EditText
+                android:id="@+id/sign_in_password_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -51,6 +53,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <Button
+            android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -61,9 +64,9 @@
             android:text="@string/sign_in"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/sign_in_password_text_view"
-            app:layout_constraintStart_toStartOf="@+id/sign_in_password_text_view"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_password_text_view" />
+            app:layout_constraintEnd_toEndOf="@+id/sign_in_password"
+            app:layout_constraintStart_toStartOf="@+id/sign_in_password"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_password" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
