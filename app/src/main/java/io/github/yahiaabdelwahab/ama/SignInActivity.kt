@@ -9,7 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
-val USER_NAME = "user_name"
 val USER_EMAIL = "user_email"
 
 class SignInActivity : AppCompatActivity() {
@@ -26,7 +25,6 @@ class SignInActivity : AppCompatActivity() {
         if (firebaseUser != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in: " + firebaseUser.uid)
             val intent = Intent(this, SignedInActivity::class.java)
-            intent.putExtra(USER_NAME, firebaseUser.displayName)
             intent.putExtra(USER_EMAIL, firebaseUser.email)
             startActivity(intent)
             finish()

@@ -11,10 +11,7 @@ class SignedInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signed_in)
 
         val intent = intent
-        val name = intent.getStringExtra(USER_NAME)
         val email = intent.getStringExtra(USER_EMAIL)
-
-        name_value.setText(name)
         email_value.setText(email)
     }
 }
