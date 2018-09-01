@@ -33,6 +33,11 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        already_registered_button.setOnClickListener {
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+        }
+
         register_button.setOnClickListener {
 
             if (register_name_edit_text.text.toString().isBlank() ||

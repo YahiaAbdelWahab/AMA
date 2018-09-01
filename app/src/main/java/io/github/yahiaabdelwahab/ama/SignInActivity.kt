@@ -38,6 +38,11 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
         Log.i(TAG, "onCreate() called");
 
+        dont_have_account_button.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+            finish()
+        }
+
         sign_in_button.setOnClickListener {
             if (sign_in_email_edit_text.text.toString().isBlank() || sign_in_password_edit_text.text.toString().isBlank()) {
                 Toast.makeText(this, "You can't leave any field empty", Toast.LENGTH_SHORT).show()
