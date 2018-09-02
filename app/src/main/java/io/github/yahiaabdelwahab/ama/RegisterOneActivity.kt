@@ -6,23 +6,30 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register_one.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.UserProfileChangeRequest
 
-class RegisterActivity : AppCompatActivity() {
 
-    val TAG = "RegisterActivity"
 
-    var mFirebaseAuth = FirebaseAuth.getInstance()
+
+
+class RegisterOneActivity : AppCompatActivity() {
+
+    val TAG = "RegisterOneActivity"
+
+
+    val mFirebaseAuth = FirebaseAuth.getInstance()
+
 
     var mAuthStateListener: FirebaseAuth.AuthStateListener = FirebaseAuth.AuthStateListener {
         Log.d(TAG, "mAuthStateListener initialized")
-        val firebaseUser = it.currentUser
+        val user = it.currentUser
 
-        if (firebaseUser != null) {
-            Log.d(TAG, "onAuthStateChanged:signed_in: " + firebaseUser.uid)
-            val intent = Intent(this, SignedInActivity::class.java)
-            intent.putExtra(USER_EMAIL, firebaseUser.email)
-            startActivity(intent)
+        if (user != null) {
+            Log.d(TAG, "onAuthStateChanged:signed_in: " + user.uid)
+
+            startActivity(Intent(this, RegisterTwoActivity::class.java))
             finish()
         } else {
             Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -31,23 +38,22 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_register_one)
 
         already_registered_button.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
         }
 
-        register_button.setOnClickListener {
+        continue_one_button.setOnClickListener {
 
-            if (register_name_edit_text.text.toString().isBlank() ||
-                    register_email_edit_text.text.toString().isBlank() ||
+            if (register_email_edit_text.text.toString().isBlank() ||
                     register_password_edit_text.text.toString().isBlank()) {
 
                 Toast.makeText(this, "You can't leave any field empty", Toast.LENGTH_SHORT).show()
+
             } else {
 
-                val name = register_name_edit_text.text.toString()
                 val email = register_email_edit_text.text.toString()
                 val password = register_password_edit_text.text.toString()
 

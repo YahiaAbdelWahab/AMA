@@ -10,8 +10,5 @@ class SignedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signed_in)
 
-        val intent = intent
-        val email = intent.getStringExtra(USER_EMAIL)
-        email_value.setText(email)
     }
 }

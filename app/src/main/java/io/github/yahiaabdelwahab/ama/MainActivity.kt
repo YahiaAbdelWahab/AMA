@@ -4,11 +4,17 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.auth.FirebaseUser
+
+
 
 class MainActivity : AppCompatActivity() {
 
     private val ActivityIndex = 0;
+
+    val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,13 +22,18 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNavigation(home_bottom_nav)
 
-        main_sign_in_button.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+        if (mAuth.currentUser != null) {
+            textView.text = "Hello, " + mAuth.currentUser!!.displayName
         }
 
-        main_register_button.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+        sign_out_button.setOnClickListener {
+            if (mAuth.currentUser != null) {
+                mAuth.signOut()
+                startActivity(Intent(this, RegisterOneActivity::class.java))
+                finish()
+            }
         }
+
     }
 
 
@@ -46,6 +57,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        val user = mAuth.currentUser
+        if (user == null) {
+            startActivity(Intent(this, RegisterOneActivity::class.java))
+            finish()
+        }
+
+    }
 
     override fun onResume() {
         super.onResume()

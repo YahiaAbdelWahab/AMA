@@ -9,8 +9,6 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
-val USER_EMAIL = "user_email"
-
 class SignInActivity : AppCompatActivity() {
 
 
@@ -24,9 +22,7 @@ class SignInActivity : AppCompatActivity() {
 
         if (firebaseUser != null) {
             Log.d(TAG, "onAuthStateChanged:signed_in: " + firebaseUser.uid)
-            val intent = Intent(this, SignedInActivity::class.java)
-            intent.putExtra(USER_EMAIL, firebaseUser.email)
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         } else {
             Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -39,7 +35,7 @@ class SignInActivity : AppCompatActivity() {
         Log.i(TAG, "onCreate() called");
 
         dont_have_account_button.setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this, RegisterOneActivity::class.java))
             finish()
         }
 
