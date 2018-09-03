@@ -4,18 +4,50 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.widget.Toast
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_search.*
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.QueryDocumentSnapshot
+
+
 
 class SearchActivity : AppCompatActivity() {
 
-
+    private val TAG = "SearchActivity"
     private val ActivityIndex = 1
+
+
+    val mAuth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         setupBottomNavigation(search_bottom_nav)
+
+        submit_search_button.setOnClickListener {
+            if (search_edit_text.text.toString().isBlank()) {
+                Toast.makeText(this, "Type a query first", Toast.LENGTH_SHORT).show()
+            } else {
+                val search = search_edit_text.text.toString()
+                db.collection(USERS_COL)
+                        .whereEqualTo(USER_DOC_NAME, search.trim())
+                        .get()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                for (document in it.result) {
+                                    if (document.data.containsKey(USER_DOC_ID)) {
+                                        search_text_view.text = document.data.get(USER_DOC_ID).toString()
+                                    }
+                                }
+                            }
+                        }
+
+            }
+        }
     }
 
     private fun setupBottomNavigation(bottomNavigation: BottomNavigationView) {
@@ -36,6 +68,15 @@ class SearchActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser == null) {
+            startActivity(Intent(this, RegisterOneActivity::class.java))
+            finish()
+        }
+
     }
 
     override fun onResume() {

@@ -82,4 +82,5 @@ class RegisterOneActivity : AppCompatActivity() {
         super.onStop()
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener)
     }
+
 }

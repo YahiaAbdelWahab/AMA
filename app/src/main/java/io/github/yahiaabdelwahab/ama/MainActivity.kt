@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.firebase.auth.FirebaseUser
 
 
 
@@ -29,8 +28,10 @@ class MainActivity : AppCompatActivity() {
         sign_out_button.setOnClickListener {
             if (mAuth.currentUser != null) {
                 mAuth.signOut()
-                startActivity(Intent(this, RegisterOneActivity::class.java))
-                finish()
+                val intent = Intent(this, RegisterOneActivity::class.java)
+//                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finishAffinity()
             }
         }
 

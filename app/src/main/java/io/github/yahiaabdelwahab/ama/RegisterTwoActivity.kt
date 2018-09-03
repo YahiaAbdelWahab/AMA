@@ -12,6 +12,12 @@ import com.google.firebase.auth.UserProfileChangeRequest
 
 
 
+const val USERS_COL = "users"
+const val USER_DOC_ID = "id"
+const val USER_DOC_NAME = "name"
+const val USER_DOC_EMAIL = "email"
+const val USER_DOC_LOCATION = "location"
+const val USER_DOC_BIO = "bio"
 
 
 class RegisterTwoActivity : AppCompatActivity() {
@@ -19,11 +25,6 @@ class RegisterTwoActivity : AppCompatActivity() {
 
     val TAG = "RegisterTwoActivity"
 
-    val USER_DOC_ID = "id"
-    val USER_DOC_NAME = "name"
-    val USER_DOC_EMAIL = "email"
-    val USER_DOC_LOCATION = "location"
-    val USER_DOC_BIO = "bio"
 
     val db = FirebaseFirestore.getInstance()
 
@@ -59,7 +60,7 @@ class RegisterTwoActivity : AppCompatActivity() {
                 userMap.put(USER_DOC_LOCATION, location)
                 userMap.put(USER_DOC_BIO, bio)
 
-                db.collection("users").document("user_" + user.uid)
+                db.collection(USERS_COL).document("user_" + user.uid)
                         .set(userMap)
                         .addOnSuccessListener {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
@@ -76,5 +77,10 @@ class RegisterTwoActivity : AppCompatActivity() {
             }
         }
     }
+
+
+//    override fun onBackPressed() {
+//
+//    }
 
 }

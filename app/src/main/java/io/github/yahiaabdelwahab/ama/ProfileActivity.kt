@@ -4,11 +4,14 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
 
     private val ActivityIndex = 2
+
+    val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,15 @@ class ProfileActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mAuth.currentUser == null) {
+            startActivity(Intent(this, RegisterOneActivity::class.java))
+            finish()
+        }
+
     }
 
     override fun onResume() {
