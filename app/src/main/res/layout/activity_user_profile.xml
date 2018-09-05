@@ -65,12 +65,53 @@
         app:layout_constraintTop_toBottomOf="@id/user_profile_bio_text_view" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_profile_questions_answered_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_ask_button" />
+
+    <Button
+        android:id="@+id/user_profile_follow_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/follow"
+        android:background="@drawable/round_button"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_profile_name" />
+
+    <EditText
+        android:id="@+id/user_profile_ask_question_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/ask_a_question_edit_text"
+        android:inputType="textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_profile_divider" />
+
+    <Button
+        android:id="@+id/user_profile_ask_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/ask"
+        android:background="@drawable/round_button"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/user_profile_ask_question_edit_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_profile_ask_question_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_ask_question_edit_text" />
 </android.support.constraint.ConstraintLayout>

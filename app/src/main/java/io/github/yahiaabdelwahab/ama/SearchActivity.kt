@@ -8,9 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_search.*
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import io.github.yahiaabdelwahab.ama.adapter.SearchAdapter
 import io.github.yahiaabdelwahab.ama.model.User
 
@@ -46,7 +44,7 @@ class SearchActivity : AppCompatActivity(), OnUserClickHandler {
                 val search = search_edit_text.text.toString()
                 val userList = mutableListOf<User>()
 
-                db.collection(USERS_COL)
+                db.collection(USERS_COLLECTION)
                         .whereEqualTo(USER_DOC_NAME, search.trim())
                         .get()
                         .addOnCompleteListener {

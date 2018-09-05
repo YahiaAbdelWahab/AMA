@@ -19,4 +19,8 @@
     <string name="one_last_step">Almost Done, Just One Last Step</string>
     <string name="search_by_name">Search By Name</string>
     <string name="location_icon">location icon</string>
+    <string name="ask_a_question_edit_text">Ask A Question</string>
+    <string name="follow">Follow</string>
+    <string name="following">Following</string>
+    <string name="ask">Ask</string>
 </resources>
