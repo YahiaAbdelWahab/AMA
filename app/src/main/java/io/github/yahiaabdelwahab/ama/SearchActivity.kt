@@ -4,16 +4,20 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_search.*
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import io.github.yahiaabdelwahab.ama.adapter.SearchAdapter
+import io.github.yahiaabdelwahab.ama.model.User
 
 
+val user_profile_activity_extra = "user_profile_activity_extra"
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), OnUserClickHandler {
 
     private val TAG = "SearchActivity"
     private val ActivityIndex = 1
@@ -28,20 +32,39 @@ class SearchActivity : AppCompatActivity() {
 
         setupBottomNavigation(search_bottom_nav)
 
+        val searchAdapter = SearchAdapter(this)
+
+        search_recycler_view.apply {
+            adapter = searchAdapter
+            layoutManager = LinearLayoutManager(baseContext)
+        }
+
         submit_search_button.setOnClickListener {
             if (search_edit_text.text.toString().isBlank()) {
                 Toast.makeText(this, "Type a query first", Toast.LENGTH_SHORT).show()
             } else {
                 val search = search_edit_text.text.toString()
+                val userList = mutableListOf<User>()
+
                 db.collection(USERS_COL)
                         .whereEqualTo(USER_DOC_NAME, search.trim())
                         .get()
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 for (document in it.result) {
-                                    if (document.data.containsKey(USER_DOC_ID)) {
-                                        search_text_view.text = document.data.get(USER_DOC_ID).toString()
+                                    if (document.data.containsKey(USER_DOC_ID) && document.data.containsKey(USER_DOC_NAME)) {
+                                        val id = document.get(USER_DOC_ID).toString()
+                                        val name = document.get(USER_DOC_NAME).toString()
+                                        val email = document.get(USER_DOC_EMAIL).toString()
+                                        val location = document.get(USER_DOC_LOCATION).toString()
+                                        val bio = document.get(USER_DOC_BIO).toString()
+
+                                        val user = User(id, name, email, location, bio)
+                                        userList.add(user)
                                     }
+                                }
+                                if (userList.size > 0) {
+                                    searchAdapter.swapData(userList)
                                 }
                             }
                         }
@@ -68,6 +91,13 @@ class SearchActivity : AppCompatActivity() {
             }
             return@setOnNavigationItemSelectedListener true
         }
+    }
+
+
+    override fun onUserClick(user: User) {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        intent.putExtra(user_profile_activity_extra, user)
+        startActivity(intent)
     }
 
     override fun onStart() {

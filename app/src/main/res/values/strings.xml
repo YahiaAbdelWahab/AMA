@@ -18,4 +18,5 @@
     <string name="already_registered">Already Registered?</string>
     <string name="one_last_step">Almost Done, Just One Last Step</string>
     <string name="search_by_name">Search By Name</string>
+    <string name="location_icon">location icon</string>
 </resources>

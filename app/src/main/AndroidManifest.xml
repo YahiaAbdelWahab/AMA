@@ -46,15 +46,14 @@
             android:name=".RegisterOneActivity"
             android:label="@string/register"
             android:launchMode="singleInstance" />
-
-
-        <activity android:name=".RegisterTwoActivity"
+        <activity
+            android:name=".RegisterTwoActivity"
             android:label="@string/register"
             android:launchMode="singleInstance" />
-
         <activity
             android:name=".SignedInActivity"
             android:label="Signed In" />
+        <activity android:name=".UserProfileActivity"></activity>
     </application>
 
 </manifest>
