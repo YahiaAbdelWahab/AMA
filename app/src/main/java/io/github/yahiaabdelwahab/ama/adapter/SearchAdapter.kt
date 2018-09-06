@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import io.github.yahiaabdelwahab.ama.OnUserClickHandler
+import io.github.yahiaabdelwahab.ama.`interface`.OnUserClickHandler
 
 import io.github.yahiaabdelwahab.ama.R
 import io.github.yahiaabdelwahab.ama.model.User
@@ -16,7 +16,7 @@ class SearchAdapter(val onUserClickHandler: OnUserClickHandler) : RecyclerView.A
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.search_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.user_search_item, parent, false)
         return SearchViewHolder(itemView)
     }
 
@@ -30,8 +30,10 @@ class SearchAdapter(val onUserClickHandler: OnUserClickHandler) : RecyclerView.A
     }
 
     fun swapData(searchedUserList: MutableList<User>) {
-        mSearchedUserList = searchedUserList
-        notifyDataSetChanged()
+        if (searchedUserList.size > 0) {
+            mSearchedUserList = searchedUserList
+            notifyDataSetChanged()
+        }
     }
 
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

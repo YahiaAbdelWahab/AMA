@@ -2,7 +2,8 @@
     <string name="app_name">AMA</string>
     <string name="home">Home</string>
     <string name="search">Search</string>
-    <string name="profile">Profile</string>
+    <string name="questions">Questions</string>
+    <string name="questions_asked">Questions Asked</string>
     <string name="settings">Settings</string>
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>

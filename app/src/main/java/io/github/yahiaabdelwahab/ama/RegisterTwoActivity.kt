@@ -3,6 +3,7 @@ package io.github.yahiaabdelwahab.ama
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
@@ -87,8 +88,11 @@ class RegisterTwoActivity : AppCompatActivity() {
 
                         }
 
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                val handler = Handler()
+                handler.postDelayed(Runnable {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }, 2000)
 
             }
         }

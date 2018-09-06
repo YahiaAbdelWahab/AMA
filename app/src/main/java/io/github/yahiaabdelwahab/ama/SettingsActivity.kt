@@ -32,8 +32,8 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(Intent(this, SearchActivity::class.java))
                     overridePendingTransition(0, 0)
                 }
-                R.id.action_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                R.id.action_questions -> {
+                    startActivity(Intent(this, QuestionsActivity::class.java))
                     overridePendingTransition(0, 0)
                 }
             }
@@ -44,8 +44,12 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (mAuth.currentUser == null) {
+        val user = mAuth.currentUser
+        if (user == null) {
             startActivity(Intent(this, RegisterOneActivity::class.java))
+            finish()
+        } else if (!Helper.isSignUpComplete(user)) {
+            startActivity(Intent(this, RegisterTwoActivity::class.java))
             finish()
         }
 

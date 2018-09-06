@@ -26,8 +26,8 @@
             android:label="@string/search"
             android:launchMode="singleInstance" />
         <activity
-            android:name=".ProfileActivity"
-            android:label="@string/profile"
+            android:name=".QuestionsActivity"
+            android:label="@string/questions"
             android:launchMode="singleInstance" />
         <activity
             android:name=".SettingsActivity"

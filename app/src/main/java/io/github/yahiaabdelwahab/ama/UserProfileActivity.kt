@@ -49,7 +49,7 @@ class UserProfileActivity : AppCompatActivity() {
                     .get()
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            for (document in it.getResult()) {
+                            for (document in it.result) {
                                 if (document.get(FOLLOWED_DOC_UID) == userDisplayed.id) {
                                     buttonFollowingStyle(user_profile_follow_button)
                                 } else {
@@ -73,8 +73,8 @@ class UserProfileActivity : AppCompatActivity() {
                 questionAskedMap.put(QUESTION_DOC_AUTHOR, mAuth.uid!!)
 
                 db.collection(USERS_COLLECTION).document(documentName)
-                        .collection(QUESTIONS_ASKED_COLLECTION).document(QUESTION_DOC)
-                        .set(questionAskedMap)
+                        .collection(QUESTIONS_ASKED_COLLECTION)
+                        .add(questionAskedMap)
                         .addOnSuccessListener {
                             Toast.makeText(this, "Question Sent", Toast.LENGTH_SHORT).show()
                             user_profile_ask_question_edit_text.text.clear()
@@ -95,8 +95,8 @@ class UserProfileActivity : AppCompatActivity() {
                     selectedUserToBeFollowedMap.put(FOLLOWED_DOC_UID, userDisplayed.id!!)
 
                     db.collection(USERS_COLLECTION).document(documentName)
-                            .collection(USERS_FOLLOWED_COLLECTION).document(FOLLOWED_DOC + "_" + userDisplayed.id)
-                            .set(selectedUserToBeFollowedMap)
+                            .collection(USERS_FOLLOWED_COLLECTION)
+                            .add(selectedUserToBeFollowedMap)
                             .addOnSuccessListener {
                                 Toast.makeText(this, "User Followed", Toast.LENGTH_SHORT).show()
                                 buttonFollowingStyle(user_profile_follow_button)
@@ -108,16 +108,27 @@ class UserProfileActivity : AppCompatActivity() {
                 } else if (user_profile_follow_button.text.toString() == getString(R.string.following)) {
                     val documentName = "user_" + mAuth.currentUser!!.uid
                     db.collection(USERS_COLLECTION).document(documentName)
-                            .collection(USERS_FOLLOWED_COLLECTION).document(FOLLOWED_DOC + "_" + userDisplayed.id)
-                            .delete()
-                            .addOnSuccessListener {
-                                Toast.makeText(this, "User Unfollowed", Toast.LENGTH_SHORT).show()
-                                buttonFollowStyle(user_profile_follow_button)
+                            .collection(USERS_FOLLOWED_COLLECTION)
+                            .whereEqualTo(FOLLOWED_DOC_UID, userDisplayed.id)
+                            .get()
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    for (document in it.result) {
+                                        document.reference.delete()
+                                                .addOnSuccessListener {
+                                                    Toast.makeText(this, "User Unfollowed", Toast.LENGTH_SHORT).show()
+                                                    buttonFollowStyle(user_profile_follow_button)
+                                                }
+                                                .addOnFailureListener {
+                                                    Toast.makeText(this, "Unfollowing this user failed", Toast.LENGTH_SHORT).show()
+                                                    buttonFollowingStyle(user_profile_follow_button)
+                                                }
+                                    }
+                                }
                             }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "Unfollowing this user failed", Toast.LENGTH_SHORT).show()
-                                buttonFollowingStyle(user_profile_follow_button)
-                            }
+
+
+
                 }
             }
         }

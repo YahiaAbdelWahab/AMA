@@ -1,4 +1,4 @@
-package io.github.yahiaabdelwahab.ama
+package io.github.yahiaabdelwahab.ama.`interface`
 
 import io.github.yahiaabdelwahab.ama.model.User
 

@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_search.*
 import com.google.firebase.auth.FirebaseAuth
 import io.github.yahiaabdelwahab.ama.adapter.SearchAdapter
+import io.github.yahiaabdelwahab.ama.`interface`.OnUserClickHandler
 import io.github.yahiaabdelwahab.ama.model.User
 
 
@@ -78,8 +79,8 @@ class SearchActivity : AppCompatActivity(), OnUserClickHandler {
                     startActivity(Intent(this, MainActivity::class.java))
                     overridePendingTransition(0, 0)
                 }
-                R.id.action_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                R.id.action_questions -> {
+                    startActivity(Intent(this, QuestionsActivity::class.java))
                     overridePendingTransition(0, 0)
                 }
                 R.id.action_settings -> {
@@ -100,8 +101,12 @@ class SearchActivity : AppCompatActivity(), OnUserClickHandler {
 
     override fun onStart() {
         super.onStart()
-        if (mAuth.currentUser == null) {
+        val user = mAuth.currentUser
+        if (user == null) {
             startActivity(Intent(this, RegisterOneActivity::class.java))
+            finish()
+        } else if (!Helper.isSignUpComplete(user)) {
+            startActivity(Intent(this, RegisterTwoActivity::class.java))
             finish()
         }
 
