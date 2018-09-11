@@ -42,23 +42,30 @@ class UserProfileActivity : AppCompatActivity() {
             user_profile_bio_text_view.text = userDisplayed.bio
 
             // Update the Follow/Following button
-            val documentName = "user_" + mAuth.currentUser!!.uid
-            db.collection(USERS_COLLECTION).document(documentName)
-                    .collection(USERS_FOLLOWED_COLLECTION)
-                    .whereEqualTo(FOLLOWED_DOC_UID, userDisplayed.id)
+            db.collection(USERS_COLLECTION)
+                    .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
                     .get()
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             for (document in it.result) {
-                                if (document.get(FOLLOWED_DOC_UID) == userDisplayed.id) {
-                                    buttonFollowingStyle(user_profile_follow_button)
-                                } else {
-                                    buttonFollowStyle(user_profile_follow_button)
-                                }
+                                document.reference.collection(USERS_FOLLOWED_COLLECTION)
+                                        .whereEqualTo(FOLLOWED_DOC_UID, userDisplayed.id)
+                                        .get()
+                                        .addOnCompleteListener {
+                                            if (it.isSuccessful) {
+                                                for (userFollowed in it.result) {
+                                                    if (userFollowed.get(FOLLOWED_DOC_UID) == userDisplayed.id) {
+                                                        buttonFollowingStyle(user_profile_follow_button)
+                                                    } else {
+                                                        buttonFollowStyle(user_profile_follow_button)
+                                                    }
+                                                }
+                                            }
+                                        }
                             }
-
                         }
                     }
+
         }
 
         user_profile_ask_button.setOnClickListener {
@@ -66,22 +73,32 @@ class UserProfileActivity : AppCompatActivity() {
             if (user_profile_ask_question_edit_text.text.toString().isBlank()) {
                 Toast.makeText(this, "You have to ask a question first", Toast.LENGTH_SHORT).show()
             } else if (userDisplayed != null) {
-                val documentName = "user_" + userDisplayed.id
 
                 val questionAskedMap = HashMap<String, Any>()
                 questionAskedMap.put(QUESTION_DOC_QUESTION, user_profile_ask_question_edit_text.text.toString())
-                questionAskedMap.put(QUESTION_DOC_AUTHOR, mAuth.uid!!)
 
-                db.collection(USERS_COLLECTION).document(documentName)
-                        .collection(QUESTIONS_ASKED_COLLECTION)
-                        .add(questionAskedMap)
-                        .addOnSuccessListener {
-                            Toast.makeText(this, "Question Sent", Toast.LENGTH_SHORT).show()
-                            user_profile_ask_question_edit_text.text.clear()
+                db.collection(USERS_COLLECTION)
+                        .whereEqualTo(USER_DOC_ID, userDisplayed.id)
+                        .get()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                for (userDocument in it.result) {
+                                    userDocument.reference.collection(QUESTIONS_ASKED_COLLECTION)
+                                            .add(questionAskedMap)
+                                            .addOnSuccessListener {
+                                                Toast.makeText(this, "Question Sent", Toast.LENGTH_SHORT).show()
+                                                user_profile_ask_question_edit_text.text.clear()
+                                            }
+                                            .addOnFailureListener {
+                                                Toast.makeText(this, "Asking Question Failed", Toast.LENGTH_SHORT).show()
+                                            }
+                                }
+                            }
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Asking Question Failed", Toast.LENGTH_SHORT).show()
-                        }
+
+
+//                        .collection(QUESTIONS_ASKED_COLLECTION)
+
             }
         }
 
@@ -94,40 +111,55 @@ class UserProfileActivity : AppCompatActivity() {
                     val selectedUserToBeFollowedMap = HashMap<String, Any>()
                     selectedUserToBeFollowedMap.put(FOLLOWED_DOC_UID, userDisplayed.id!!)
 
-                    db.collection(USERS_COLLECTION).document(documentName)
-                            .collection(USERS_FOLLOWED_COLLECTION)
-                            .add(selectedUserToBeFollowedMap)
-                            .addOnSuccessListener {
-                                Toast.makeText(this, "User Followed", Toast.LENGTH_SHORT).show()
-                                buttonFollowingStyle(user_profile_follow_button)
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "Following user failed", Toast.LENGTH_SHORT).show()
-                                buttonFollowStyle(user_profile_follow_button)
-                            }
-                } else if (user_profile_follow_button.text.toString() == getString(R.string.following)) {
-                    val documentName = "user_" + mAuth.currentUser!!.uid
-                    db.collection(USERS_COLLECTION).document(documentName)
-                            .collection(USERS_FOLLOWED_COLLECTION)
-                            .whereEqualTo(FOLLOWED_DOC_UID, userDisplayed.id)
+                    db.collection(USERS_COLLECTION)
+                            .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
                             .get()
                             .addOnCompleteListener {
                                 if (it.isSuccessful) {
-                                    for (document in it.result) {
-                                        document.reference.delete()
+                                    for (userDocument in it.result) {
+                                        userDocument.reference.collection(USERS_FOLLOWED_COLLECTION)
+                                                .add(selectedUserToBeFollowedMap)
                                                 .addOnSuccessListener {
-                                                    Toast.makeText(this, "User Unfollowed", Toast.LENGTH_SHORT).show()
-                                                    buttonFollowStyle(user_profile_follow_button)
+                                                    Toast.makeText(this, "User Followed", Toast.LENGTH_SHORT).show()
+                                                    buttonFollowingStyle(user_profile_follow_button)
                                                 }
                                                 .addOnFailureListener {
-                                                    Toast.makeText(this, "Unfollowing this user failed", Toast.LENGTH_SHORT).show()
-                                                    buttonFollowingStyle(user_profile_follow_button)
+                                                    Toast.makeText(this, "Following user failed", Toast.LENGTH_SHORT).show()
+                                                    buttonFollowStyle(user_profile_follow_button)
                                                 }
                                     }
                                 }
                             }
 
-
+                } else if (user_profile_follow_button.text.toString() == getString(R.string.following)) {
+                    val documentName = "user_" + mAuth.currentUser!!.uid
+                    db.collection(USERS_COLLECTION)
+                            .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
+                            .get()
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    for (userDocument in it.result) {
+                                        userDocument.reference.collection(USERS_FOLLOWED_COLLECTION)
+                                                .whereEqualTo(FOLLOWED_DOC_UID, userDisplayed.id)
+                                                .get()
+                                                .addOnCompleteListener {
+                                                    if (it.isSuccessful) {
+                                                        for (document in it.result) {
+                                                            document.reference.delete()
+                                                                    .addOnSuccessListener {
+                                                                        Toast.makeText(this, "User Unfollowed", Toast.LENGTH_SHORT).show()
+                                                                        buttonFollowStyle(user_profile_follow_button)
+                                                                    }
+                                                                    .addOnFailureListener {
+                                                                        Toast.makeText(this, "Unfollowing this user failed", Toast.LENGTH_SHORT).show()
+                                                                        buttonFollowingStyle(user_profile_follow_button)
+                                                                    }
+                                                        }
+                                                    }
+                                                }
+                                    }
+                                }
+                            }
 
                 }
             }

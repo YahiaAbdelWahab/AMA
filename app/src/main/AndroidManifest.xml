@@ -53,7 +53,8 @@
         <activity
             android:name=".SignedInActivity"
             android:label="Signed In" />
-        <activity android:name=".UserProfileActivity"></activity>
+        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".AnswerQuestionActivity"></activity>
     </application>
 
 </manifest>

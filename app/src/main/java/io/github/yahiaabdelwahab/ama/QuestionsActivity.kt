@@ -26,18 +26,19 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
 
     val db = FirebaseFirestore.getInstance()
 
+    lateinit var questionAdapter: QuestionsAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_questions)
 
-        val questionAdapter = QuestionsAdapter(this)
+
+        questionAdapter  = QuestionsAdapter(this)
 
         questions_recycler_view.apply {
             adapter = questionAdapter
             layoutManager = LinearLayoutManager(baseContext)
         }
-
-        getQuestionsAsked(questionAdapter)
 
         setupBottomNavigation(questions_bottom_nav)
     }
@@ -50,20 +51,30 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
     private fun getQuestionsAsked(questionsAdapter: QuestionsAdapter) {
         val questionsList: MutableList<String> = mutableListOf()
 
-        db.collection(USERS_COLLECTION).document("user_" + mAuth.currentUser!!.uid)
-                .collection(QUESTIONS_ASKED_COLLECTION)
+        db.collection(USERS_COLLECTION)
+                .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
                 .get()
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         for (document in it.result) {
-                            val question: String = document.get(QUESTION_DOC_QUESTION).toString()
-                            questionsList.add(question)
+                            document.reference.collection(QUESTIONS_ASKED_COLLECTION)
+                                    .get()
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            for (questionDocument in it.result) {
+                                                val questionString: String = questionDocument.get(QUESTION_DOC_QUESTION).toString()
+                                                questionsList.add(questionString)
+                                            }
+                                        }
+                                        if (questionsList.size > 0) {
+                                            questionsAdapter.swapData(questionsList)
+                                        }
+                                    }
                         }
                     }
-                    if (questionsList.size > 0) {
-                        questionsAdapter.swapData(questionsList)
-                    }
                 }
+
+
     }
 
 
@@ -103,6 +114,7 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
 
     override fun onResume() {
         super.onResume()
-        questions_bottom_nav.menu.getItem(ActivityIndex).setChecked(true);
+        questions_bottom_nav.menu.getItem(ActivityIndex).setChecked(true)
+        getQuestionsAsked(questionAdapter)
     }
 }

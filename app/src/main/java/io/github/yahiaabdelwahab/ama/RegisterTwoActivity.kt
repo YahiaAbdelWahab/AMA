@@ -14,7 +14,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 
 
 const val USERS_COLLECTION = "users"
-const val USER_DOC_ID = "id"
+const val USER_DOC_ID = "user_id"
 const val USER_DOC_NAME = "name"
 const val USER_DOC_EMAIL = "email"
 const val USER_DOC_LOCATION = "location"
@@ -24,15 +24,11 @@ const val USER_DOC_BIO = "bio"
 const val QUESTIONS_ASKED_COLLECTION = "questionsAsked"
 const val QUESTIONS_ANSWERED_COLLECTION = "questionsAnswered"
 const val USERS_FOLLOWED_COLLECTION = "usersFollowed"
-const val QUESTION_DOC = "question"
 const val QUESTION_DOC_QUESTION = "question"
-const val QUESTION_DOC_AUTHOR = "author"
 
-const val ANSWER_DOC = "answer"
 const val ANSWER_DOC_QUESTION = "question"
 const val ANSWER_DOC_ANSWER = "answer"
 
-const val FOLLOWED_DOC = "followed"
 const val FOLLOWED_DOC_UID = "uid"
 
 
@@ -77,8 +73,8 @@ class RegisterTwoActivity : AppCompatActivity() {
                 userMap.put(USER_DOC_LOCATION, location)
                 userMap.put(USER_DOC_BIO, bio)
 
-                db.collection(USERS_COLLECTION).document("user_" + user.uid)
-                        .set(userMap)
+                db.collection(USERS_COLLECTION)
+                        .add(userMap)
                         .addOnSuccessListener {
                             Log.d(TAG, "DocumentSnapshot successfully written!");
 
