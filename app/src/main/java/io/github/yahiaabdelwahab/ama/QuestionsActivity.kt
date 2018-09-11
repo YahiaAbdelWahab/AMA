@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import io.github.yahiaabdelwahab.ama.`interface`.OnQuestionClickHandler
 import io.github.yahiaabdelwahab.ama.adapter.QuestionsAdapter
 
+val QUESTION_ASKED_EXTRA = "question_asked_extra"
 
 class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
 
@@ -32,20 +33,14 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_questions)
 
-
-        questionAdapter  = QuestionsAdapter(this)
-
-        questions_recycler_view.apply {
-            adapter = questionAdapter
-            layoutManager = LinearLayoutManager(baseContext)
-        }
-
         setupBottomNavigation(questions_bottom_nav)
     }
 
 
     override fun onQuestionClick(question: String) {
-
+        val intent = Intent(this, AnswerQuestionActivity::class.java)
+        intent.putExtra(QUESTION_ASKED_EXTRA, question)
+        startActivity(intent)
     }
 
     private fun getQuestionsAsked(questionsAdapter: QuestionsAdapter) {
@@ -115,6 +110,14 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
     override fun onResume() {
         super.onResume()
         questions_bottom_nav.menu.getItem(ActivityIndex).setChecked(true)
+        questionAdapter  = QuestionsAdapter(this)
+
+        questions_recycler_view.apply {
+            adapter = questionAdapter
+            layoutManager = LinearLayoutManager(baseContext)
+        }
+
         getQuestionsAsked(questionAdapter)
+        Log.d("QuestionsActivity", "onResume called")
     }
 }

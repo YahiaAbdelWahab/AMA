@@ -4,16 +4,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import io.github.yahiaabdelwahab.ama.model.User
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import com.google.firebase.firestore.FirebaseFirestore
-
-
-
 
 
 
@@ -56,10 +53,10 @@ class UserProfileActivity : AppCompatActivity() {
                                                 for (userFollowed in it.result) {
                                                     if (userFollowed.get(FOLLOWED_DOC_UID) == userDisplayed.id) {
                                                         buttonFollowingStyle(user_profile_follow_button)
-                                                    } else {
-                                                        buttonFollowStyle(user_profile_follow_button)
                                                     }
                                                 }
+                                                user_profile_follow_progress_bar.visibility = View.INVISIBLE
+                                                user_profile_follow_button.visibility = View.VISIBLE
                                             }
                                         }
                             }
@@ -70,9 +67,13 @@ class UserProfileActivity : AppCompatActivity() {
 
         user_profile_ask_button.setOnClickListener {
 
+            user_profile_ask_progress_bar.visibility = View.VISIBLE
+            user_profile_ask_button.visibility = View.INVISIBLE
+
             if (user_profile_ask_question_edit_text.text.toString().isBlank()) {
                 Toast.makeText(this, "You have to ask a question first", Toast.LENGTH_SHORT).show()
             } else if (userDisplayed != null) {
+                val documentName = "user_" + userDisplayed.id
 
                 val questionAskedMap = HashMap<String, Any>()
                 questionAskedMap.put(QUESTION_DOC_QUESTION, user_profile_ask_question_edit_text.text.toString())
@@ -93,11 +94,12 @@ class UserProfileActivity : AppCompatActivity() {
                                                 Toast.makeText(this, "Asking Question Failed", Toast.LENGTH_SHORT).show()
                                             }
                                 }
+
+                                user_profile_ask_progress_bar.visibility = View.INVISIBLE
+                                user_profile_ask_button.visibility = View.VISIBLE
                             }
                         }
 
-
-//                        .collection(QUESTIONS_ASKED_COLLECTION)
 
             }
         }

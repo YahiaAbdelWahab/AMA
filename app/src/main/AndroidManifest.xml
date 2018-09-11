@@ -50,11 +50,12 @@
             android:name=".RegisterTwoActivity"
             android:label="@string/register"
             android:launchMode="singleInstance" />
-        <activity
-            android:name=".SignedInActivity"
-            android:label="Signed In" />
+
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".AnswerQuestionActivity"></activity>
+
+        <activity android:name=".AnswerQuestionActivity"
+            android:label="@string/answer"
+            android:launchMode="singleInstance" />
     </application>
 
 </manifest>

@@ -24,4 +24,7 @@
     <string name="follow">Follow</string>
     <string name="following">Following</string>
     <string name="ask">Ask</string>
+    <string name="answer">Answer</string>
+    <string name="your_answer">Your Answer</string>
+    <string name="type_answer_first">You have to type an answer first!</string>
 </resources>
