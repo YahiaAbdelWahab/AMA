@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -11,7 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import io.github.yahiaabdelwahab.ama.model.User
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import com.google.firebase.firestore.FirebaseFirestore
-
+import io.github.yahiaabdelwahab.ama.adapter.QuestionsAnsweredAdapter
+import io.github.yahiaabdelwahab.ama.model.Answer
 
 
 class UserProfileActivity : AppCompatActivity() {
@@ -22,11 +24,14 @@ class UserProfileActivity : AppCompatActivity() {
 
     val TAG = "UserProfileActivity"
 
+    lateinit var userDisplayed: User
+
+    private lateinit var questionsAnsweredAdapter: QuestionsAnsweredAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
-        var userDisplayed: User? = null
 
         val intent = intent
         if (intent != null && intent.extras.containsKey(user_profile_activity_extra)) {
@@ -99,8 +104,6 @@ class UserProfileActivity : AppCompatActivity() {
                                 user_profile_ask_button.visibility = View.VISIBLE
                             }
                         }
-
-
             }
         }
 
@@ -134,7 +137,6 @@ class UserProfileActivity : AppCompatActivity() {
                             }
 
                 } else if (user_profile_follow_button.text.toString() == getString(R.string.following)) {
-                    val documentName = "user_" + mAuth.currentUser!!.uid
                     db.collection(USERS_COLLECTION)
                             .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
                             .get()
@@ -169,6 +171,40 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
+    private fun getAnsweredQuestions(user: User) {
+        questionsAnsweredAdapter = QuestionsAnsweredAdapter()
+
+        user_profile_questions_answered_recycler_view.apply {
+            adapter = questionsAnsweredAdapter
+            layoutManager = LinearLayoutManager(baseContext)
+        }
+
+        val questionsAnsweredList: MutableList<Answer> = mutableListOf()
+
+        db.collection(USERS_COLLECTION)
+                .whereEqualTo(USER_DOC_ID, user.id)
+                .get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        for (userDocument in it.result) {
+                            userDocument.reference.collection(QUESTIONS_ANSWERED_COLLECTION)
+                                    .get()
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            for (answerDocument in it.result) {
+                                                val questionString = answerDocument.get(ANSWER_DOC_QUESTION) as String
+                                                val answerString = answerDocument.get(ANSWER_DOC_ANSWER) as String
+                                                val answer: Answer = Answer(questionString, answerString)
+                                                questionsAnsweredList.add(answer)
+                                            }
+                                            questionsAnsweredAdapter.swapData(questionsAnsweredList)
+                                        }
+                                    }
+                        }
+                    }
+                }
+    }
+
 
     private fun buttonFollowingStyle(button: Button) {
         button.background = getDrawable(R.drawable.following_button)
@@ -190,5 +226,10 @@ class UserProfileActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getAnsweredQuestions(userDisplayed)
     }
 }
