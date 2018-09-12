@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/user_followed_list_item_name_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        tools:text="Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/user_followed_list_item_location_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/user_followed_list_item_name_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/user_followed_list_item_name_text_view"
+        app:srcCompat="@drawable/ic_location"
+        android:background="@drawable/recycler_view_ripple" />
+
+    <TextView
+        android:id="@+id/user_followed_list_item_location_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        tools:text="Location"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/user_followed_list_item_location_image_view"
+        app:layout_constraintStart_toEndOf="@+id/user_followed_list_item_location_image_view"
+        app:layout_constraintTop_toBottomOf="@+id/user_followed_list_item_location_image_view" />
+
+    <View
+        android:id="@+id/user_followed_list_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/user_followed_list_item_location_text_view" />
+</android.support.constraint.ConstraintLayout>
