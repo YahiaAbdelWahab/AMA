@@ -30,15 +30,6 @@ class MainActivity : AppCompatActivity(), OnUserFollowedClickHandler {
 
         setupBottomNavigation(home_bottom_nav)
 
-        sign_out_button.setOnClickListener {
-            if (mAuth.currentUser != null) {
-                mAuth.signOut()
-                val intent = Intent(this, RegisterOneActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-        }
-
     }
 
 
@@ -143,6 +134,8 @@ class MainActivity : AppCompatActivity(), OnUserFollowedClickHandler {
     override fun onResume() {
         super.onResume()
         home_bottom_nav.menu.getItem(ActivityIndex).setChecked(true)
-        getUsersFollowed()
+        if (mAuth.currentUser != null) {
+            getUsersFollowed()
+        }
     }
 }

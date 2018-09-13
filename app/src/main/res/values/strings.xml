@@ -6,6 +6,7 @@
     <string name="questions_asked">Questions Asked</string>
     <string name="settings">Settings</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_out">Sign Out</string>
     <string name="register">Register</string>
     <string name="continue_one">Continue</string>
     <string name="continue_two">Finish</string>
@@ -27,4 +28,7 @@
     <string name="answer">Answer</string>
     <string name="your_answer">Your Answer</string>
     <string name="type_answer_first">You have to type an answer first!</string>
+    <string name="users_you_follow">Users You Follow</string>
+    <string name="hint_update_your_name">Update Your Name</string>
+    <string name="update">Update</string>
 </resources>

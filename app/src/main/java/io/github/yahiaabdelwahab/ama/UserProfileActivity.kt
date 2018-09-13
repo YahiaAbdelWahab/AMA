@@ -26,7 +26,6 @@ class UserProfileActivity : AppCompatActivity() {
 
     lateinit var userDisplayed: User
 
-    private lateinit var questionsAnsweredAdapter: QuestionsAnsweredAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,7 +171,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun getAnsweredQuestions(user: User) {
-        questionsAnsweredAdapter = QuestionsAnsweredAdapter()
+        val questionsAnsweredAdapter = QuestionsAnsweredAdapter()
 
         user_profile_questions_answered_recycler_view.apply {
             adapter = questionsAnsweredAdapter

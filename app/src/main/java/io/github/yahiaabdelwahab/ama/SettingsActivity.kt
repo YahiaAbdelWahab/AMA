@@ -4,8 +4,13 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_settings.*
+import com.google.firebase.auth.UserProfileChangeRequest
+
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -13,11 +18,53 @@ class SettingsActivity : AppCompatActivity() {
 
     val mAuth = FirebaseAuth.getInstance()
 
+    val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
         setupBottomNavigation(settings_bottom_nav)
+
+        update_your_name_button.setOnClickListener {
+            if (update_your_name_edit_text.text.isBlank()) {
+                Toast.makeText(this, "Please Enter Your New Name", Toast.LENGTH_SHORT).show()
+            } else {
+                val newName = update_your_name_edit_text.text.toString()
+                val user = mAuth.currentUser
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(newName)
+                        .build()
+                user?.updateProfile(profileUpdates)
+                        ?.addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                Toast.makeText(this, "Name Updated", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                val newNameMap = HashMap<String, Any>()
+                newNameMap.put(USER_DOC_NAME, newName)
+                db.collection(USERS_COLLECTION)
+                        .whereEqualTo(USER_DOC_ID, mAuth.currentUser!!.uid)
+                        .get()
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                for (userDocument in it.result) {
+                                    userDocument.reference.update(newNameMap)
+                                }
+                            }
+                        }
+            }
+        }
+
+        sign_out_button.setOnClickListener {
+            if (mAuth.currentUser != null) {
+                mAuth.signOut()
+                val intent = Intent(this, RegisterOneActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 
 

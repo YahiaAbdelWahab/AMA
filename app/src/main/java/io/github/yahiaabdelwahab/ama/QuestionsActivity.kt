@@ -117,7 +117,8 @@ class QuestionsActivity : AppCompatActivity(), OnQuestionClickHandler {
             layoutManager = LinearLayoutManager(baseContext)
         }
 
-        getQuestionsAsked(questionAdapter)
-        Log.d("QuestionsActivity", "onResume called")
+        if (mAuth.currentUser != null) {
+            getQuestionsAsked(questionAdapter)
+        }
     }
 }

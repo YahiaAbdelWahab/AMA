@@ -36,12 +36,8 @@
         <activity
             android:name=".SignInActivity"
             android:label="@string/sign_in"
-            android:launchMode="singleInstance"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
+            android:launchMode="singleInstance" />
+
         <activity
             android:name=".RegisterOneActivity"
             android:label="@string/register"
