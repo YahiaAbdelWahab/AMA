@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import io.github.yahiaabdelwahab.ama.`interface`.OnUserFollowedClickHandler
@@ -84,7 +85,11 @@ class MainActivity : AppCompatActivity(), OnUserFollowedClickHandler {
                                     .get()
                                     .addOnCompleteListener {
                                         if (it.isSuccessful) {
+
                                             for (userFollowed in it.result) {
+                                                home_progress_bar.visibility = View.VISIBLE
+                                                home_recycler_view.visibility = View.INVISIBLE
+
                                                 uidList.add(userFollowed.get(FOLLOWED_DOC_UID).toString())
                                             }
 
@@ -103,7 +108,8 @@ class MainActivity : AppCompatActivity(), OnUserFollowedClickHandler {
                                                                     val user = User(id, name, email, location, bio)
                                                                     usersFollowedList.add(user)
                                                                 }
-
+                                                                home_progress_bar.visibility = View.INVISIBLE
+                                                                home_recycler_view.visibility = View.VISIBLE
                                                                 usersFollowedAdapter.swapData(usersFollowedList)
                                                             }
                                                         }
